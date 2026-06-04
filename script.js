@@ -2,7 +2,7 @@
 new Chart(document.getElementById("barChart"), {
     type: 'bar',
     data: {
-        labels: ["A", "B", "C", "D", "E", "F"],
+        labels: ["MoJ", "LAA", "HMCTS", "HMPPS", "CICA", "DCA"],
         datasets: [{
             label: "Cost (£M)",
             data: [0.1, 3, 3.6, 0.07, 1.2, 4.6],
@@ -25,9 +25,9 @@ new Chart(document.getElementById("pieChart"), {
 
 // Department List
 const departments = [
-    {name: "F", cost: "£4.60M"},
-    {name: "C", cost: "£3.60M"},
-    {name: "B", cost: "£3.00M"}
+    {name: "MoJ", cost: "£4.60M"},
+    {name: "LAA", cost: "£3.60M"},
+    {name: "HMCTS", cost: "£3.00M"}
 ];
 
 const list = document.getElementById("deptList");
