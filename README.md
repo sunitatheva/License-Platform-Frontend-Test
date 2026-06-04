@@ -1,1 +1,1 @@
-# OR-License-Platform
+License-Platform-Prototype
