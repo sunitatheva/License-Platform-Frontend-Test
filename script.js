@@ -1,18 +1,38 @@
-const API = "http://localhost:8080/api/dashboard";
+// ✅ Dummy KPI Data
+const kpiData = {
+    totalCost: 10.47,
+    technologies: 28,
+    processorLicenses: 7987,
+    namedUsers: 4024,
+    risk: "Medium",
+    savings: 1.35
+};
 
-// Load everything
-async function loadDashboard() {
-    const kpis = await fetch(API + "/kpis").then(r => r.json());
-    renderKPIs(kpis);
+// ✅ Dummy Department Data (MoJ ecosystem)
+const departmentData = [
+    { name: "MoJ", cost: 0.095 },
+    { name: "LAA", cost: 3.0 },
+    { name: "HMCTS", cost: 3.6 },
+    { name: "HMPPS", cost: 0.078 },
+    { name: "CICA", cost: 1.2 },
+    { name: "DCA", cost: 4.6 }
+];
 
-    const dept = await fetch(API + "/departments").then(r => r.json());
-    renderBarChart(dept);
+// ✅ Dummy Gap Data
+const gapData = [
+    { category: "Processor", required: 7987, entitled: 6800, gap: -1187 },
+    { category: "Named User", required: 4024, entitled: 4500, gap: 476 }
+];
 
-    const gaps = await fetch(API + "/gaps").then(r => r.json());
-    renderTable(gaps);
+// ✅ INIT
+function loadDashboard() {
+    renderKPIs(kpiData);
+    renderBarChart(departmentData);
+    renderPieChart();
+    renderTable(gapData);
 }
 
-// KPI
+// ✅ KPI RENDER
 function renderKPIs(data) {
     const container = document.getElementById("kpiContainer");
 
@@ -33,24 +53,56 @@ function renderKPIs(data) {
     `).join("");
 }
 
-// BAR CHART (MoJ Labels ✅)
+// ✅ BAR CHART (MoJ labels)
 function renderBarChart(data) {
-    const labels = data.map(d => d.name);
-    const values = data.map(d => d.cost);
-
     new Chart(document.getElementById("barChart"), {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: data.map(d => d.name),
             datasets: [{
-                data: values,
-                backgroundColor: "#1e6fff"
+                label: "Cost (£M)",
+                data: data.map(d => d.cost),
+                backgroundColor: "#1e6fff",
+                borderRadius: 6
             }]
+        },
+        options: {
+            plugins: { legend: { display: false }},
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: v => "£" + v + "M" }
+                }
+            }
         }
     });
 }
 
-// TABLE
+// ✅ PIE CHART
+function renderPieChart() {
+    new Chart(document.getElementById("pieChart"), {
+        type: 'doughnut',
+        data: {
+            labels: ["Database", "Middleware", "Applications", "Infrastructure"],
+            datasets: [{
+                data: [51, 24, 15, 10],
+                backgroundColor: [
+                    "#1b4db1",
+                    "#28a745",
+                    "#ff8c00",
+                    "#7b3fbf"
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+}
+
+// ✅ TABLE
 function renderTable(data) {
     const table = document.getElementById("gapTable");
 
@@ -64,11 +116,14 @@ function renderTable(data) {
         ${data.map(g => `
         <tr>
             <td>${g.category}</td>
-            <td>${g.required}</td>
-            <td>${g.entitled}</td>
-            <td class="${g.gap < 0 ? 'neg':'pos'}">${g.gap}</td>
+            <td>${g.required.toLocaleString()}</td>
+            <td>${g.entitled.toLocaleString()}</td>
+            <td class="${g.gap < 0 ? 'neg':'pos'}">
+                ${g.gap > 0 ? '+' : ''}${g.gap.toLocaleString()}
+            </td>
         </tr>`).join('')}
     `;
 }
 
+// ✅ RUN APP
 loadDashboard();
