@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Executive Insight Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>LICENSE</h2>
+        <ul>
+            <li class="active">Executive Insight</li>
+            <li>License Overview</li>
+            <li>Technology Layer</li>
+            <li>Compliance & Risk</li>
+            <li>Settings</li>
+        </ul>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <header>
+            <h1>Executive Insight</h1>
+            <input type="date">
+        </header>
+
+        <!-- KPI Cards -->
+        <div class="cards">
+            <div class="card">
+                <h4>Total Cost</h4>
+                <p>£10.47M</p>
+            </div>
+            <div class="card">
+                <h4>Technologies</h4>
+                <p>28</p>
+            </div>
+            <div class="card">
+                <h4>Processor Licenses</h4>
+                <p>7,987</p>
+            </div>
+            <div class="card">
+                <h4>Named Users</h4>
+                <p>4,024</p>
+            </div>
+            <div class="card risk">
+                <h4>Risk</h4>
+                <p>Medium</p>
+            </div>
+            <div class="card">
+                <h4>Savings</h4>
+                <p>£1.35M</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid">
+
+            <div class="panel">
+                <h3>Annual Cost by Department</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <div class="panel">
+                <h3>Technology Cost Split</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+            <div class="panel">
+                <h3>Top Departments</h3>
+                <ul id="deptList"></ul>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="panel">
+            <h3>License Gap</h3>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Required</th>
+                    <th>Entitled</th>
+                    <th>Gap</th>
+                </tr>
+                <tr>
+                    <td>Processor</td>
+                    <td>7987</td>
+                    <td>6800</td>
+                    <td class="negative">-1187</td>
+                </tr>
+                <tr>
+                    <td>Named User</td>
+                    <td>4024</td>
+                    <td>4500</td>
+                    <td class="positive">+476</td>
+                </tr>
+            </table>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

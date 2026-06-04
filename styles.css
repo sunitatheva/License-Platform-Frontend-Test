@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #0b2948;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.sidebar li.active {
+    background: #1976d2;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.card.risk p {
+    color: red;
+}
+
+/* Grid Layout */
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
