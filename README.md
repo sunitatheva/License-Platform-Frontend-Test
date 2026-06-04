@@ -1,1 +1,1 @@
-License-Platform-Prototype
+License-Platform-Test
