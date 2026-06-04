@@ -1,39 +1,74 @@
-// Bar Chart
-new Chart(document.getElementById("barChart"), {
-    type: 'bar',
-    data: {
-        labels: ["MoJ", "LAA", "HMCTS", "HMPPS", "CICA", "DCA"],
-        datasets: [{
-            label: "Cost (£M)",
-            data: [0.1, 3, 3.6, 0.07, 1.2, 4.6],
-            backgroundColor: "#1976d2"
-        }]
-    }
-});
+const API = "http://localhost:8080/api/dashboard";
 
-// Pie Chart
-new Chart(document.getElementById("pieChart"), {
-    type: 'doughnut',
-    data: {
-        labels: ["Database", "Middleware", "Apps", "Infra"],
-        datasets: [{
-            data: [51, 24, 15, 9],
-            backgroundColor: ["#0d47a1", "#388e3c", "#f57c00", "#7b1fa2"]
-        }]
-    }
-});
+// Load everything
+async function loadDashboard() {
+    const kpis = await fetch(API + "/kpis").then(r => r.json());
+    renderKPIs(kpis);
 
-// Department List
-const departments = [
-    {name: "MoJ", cost: "£4.60M"},
-    {name: "LAA", cost: "£3.60M"},
-    {name: "HMCTS", cost: "£3.00M"}
-];
+    const dept = await fetch(API + "/departments").then(r => r.json());
+    renderBarChart(dept);
 
-const list = document.getElementById("deptList");
+    const gaps = await fetch(API + "/gaps").then(r => r.json());
+    renderTable(gaps);
+}
 
-departments.forEach(d => {
-    const li = document.createElement("li");
-    li.textContent = `${d.name} - ${d.cost}`;
-    list.appendChild(li);
-});
+// KPI
+function renderKPIs(data) {
+    const container = document.getElementById("kpiContainer");
+
+    const items = [
+        ["Total Cost", "£" + data.totalCost + "M"],
+        ["Technologies", data.technologies],
+        ["Processors", data.processorLicenses],
+        ["Named Users", data.namedUsers],
+        ["Risk", data.risk],
+        ["Savings", "£" + data.savings + "M"]
+    ];
+
+    container.innerHTML = items.map(i => `
+        <div class="kpi">
+            <div>${i[0]}</div>
+            <h2>${i[1]}</h2>
+        </div>
+    `).join("");
+}
+
+// BAR CHART (MoJ Labels ✅)
+function renderBarChart(data) {
+    const labels = data.map(d => d.name);
+    const values = data.map(d => d.cost);
+
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: "#1e6fff"
+            }]
+        }
+    });
+}
+
+// TABLE
+function renderTable(data) {
+    const table = document.getElementById("gapTable");
+
+    table.innerHTML = `
+        <tr>
+            <th>Category</th>
+            <th>Required</th>
+            <th>Entitled</th>
+            <th>Gap</th>
+        </tr>
+        ${data.map(g => `
+        <tr>
+            <td>${g.category}</td>
+            <td>${g.required}</td>
+            <td>${g.entitled}</td>
+            <td class="${g.gap < 0 ? 'neg':'pos'}">${g.gap}</td>
+        </tr>`).join('')}
+    `;
+}
+
+loadDashboard();
